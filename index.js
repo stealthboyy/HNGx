@@ -11,12 +11,12 @@ const path = "/api/";
 
 app.get(`${path}hello`, async (req, res) => {
     // const visitorName = req.query.visitor_name;
-    const clientIp = req.headers['x-forwarded-for'] || req.socket.rem;
+    // const clientIp = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
 
     try {
-        console.log(req.headers['x-forwarded-for'])
+        console.log("req.headers['x-forwarded-for']")
         // Using an IP geolocation service to get the location of the request.
-        const geoLocation = await axios.get(`https://api.ip2location.io/?key=${process.env.IP_LOCATION_API_KEY}&ip=${clientIp}&format=json`);
+        // const geoLocation = await axios.get(`https://api.ip2location.io/?key=${process.env.IP_LOCATION_API_KEY}&ip=${clientIp}&format=json`);
         // console.log(geoLocation.data);
 
         // const location = geoLocation.data.city;
