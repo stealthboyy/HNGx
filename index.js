@@ -10,30 +10,31 @@ const path = "/api/";
 
 
 app.get(`${path}hello`, async (req, res) => {
-    // const visitorName = req.query.visitor_name;
-    // const clientIp = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+    const visitorName = req.query.visitor_name;
+    const clientIp = "8.8.8.8";
 
     try {
-        console.log("req.headers['x-forwarded-for']")
         // Using an IP geolocation service to get the location of the request.
-        // const geoLocation = await axios.get(`https://api.ip2location.io/?key=${process.env.IP_LOCATION_API_KEY}&ip=${clientIp}&format=json`);
-        // console.log(geoLocation.data);
+        const geoLocation = await axios.get(`https://api.ip2location.io/?key=${process.env.IP_LOCATION_API_KEY}&ip=${clientIp}&format=json`);
 
-        // const location = geoLocation.data.city;
+        const location = `${geoLocation.data.city_name}, ${geoLocation.data.region_name}`;
 
-        //  // Using a weather API to get the temperature of the requester's location
-        // //  const weatherResponse = await axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${process.env.WEATHER_API_KEY}&units=metric`);
-        // // const temperature = weatherResponse.data.main.temp;
 
-        // res.json({
-        //     client_ip: clientIp,
-        //     location: location,
-        //     greeting: `Hello, ${visitorName}!, the temperature is ${temperature} degrees Celsius in ${location}`
-        //     });
+        //  Using a weather API to get the temperature of the requester's location
+
+        const weatherResponse = await axios.get(`http://api.weatherapi.com/v1/current.json?key=${process.env.API_KEY}&q=${clientIp}`);
+        //  console.log(weatherResponse);
+        const temperature = weatherResponse.data.current.temp_c;
+
+        res.json({
+            client_ip: clientIp,
+            location: location,
+            greeting: `Hello, ${visitorName}!, the temperature is ${temperature} degrees Celsius in ${location}`
+            });
     }
 
     catch (error){
-        res.status(500).json({ error: 'Failed to get location or weather information' });
+        res.status(500).json({ error: 'Failed to get location or the weather information'});
     }
 })
 
