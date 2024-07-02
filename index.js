@@ -8,10 +8,16 @@ const app = express();
 const port = process.env.PORT || 3000;
 const path = "/api/";
 
+app.set('trust proxy', true);
 
 app.get(`${path}hello`, async (req, res) => {
     const visitorName = req.query.visitor_name;
-    const clientIp = req.header['x-forwarded-for'] || req.socket.remoteAddress;
+    let clientIp = req.header['x-forwarded-for'] || req.socket.remoteAddress;
+    // Handle local IP addresses
+    if (clientIp === '::1' || clientIp === '127.0.0.1') {
+        clientIp = '18.8.8.8'; 
+        // Use a default IP address for testing, 
+    }
 
     try {
         // Using an IP geolocation service to get the location of the request.
