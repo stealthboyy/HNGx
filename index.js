@@ -11,7 +11,7 @@ const path = "/api/";
 
 app.get(`${path}hello`, async (req, res) => {
     const visitorName = req.query.visitor_name;
-    const clientIp = "8.8.8.8";
+    const clientIp = req.header['x-forwarded-for'] || req.socket.remoteAddress;
 
     try {
         // Using an IP geolocation service to get the location of the request.
