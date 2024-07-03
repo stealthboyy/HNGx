@@ -12,8 +12,9 @@ app.set('trust proxy', true);
 
 app.get(`${path}hello`, async (req, res) => {
     const visitorName = req.query.visitor_name;
-    let clientIp = req.header['x-forwarded-for'] || req.socket.remoteAddress;
+    let clientIp = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
     const ip = clientIp.split(",")[0]
+
 
     try {
         // Using an IP geolocation service to get the location of the request.
