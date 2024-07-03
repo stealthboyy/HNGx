@@ -13,7 +13,7 @@ app.set('trust proxy', true);
 app.get(`${path}hello`, async (req, res) => {
     const visitorName = req.query.visitor_name;
     let clientIp = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
-    const ip = clientIp.split(",")[0]
+    const ip = clientIp.split(",")[0].trim()
 
 
     try {
