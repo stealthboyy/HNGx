@@ -13,13 +13,13 @@ app.set('trust proxy', true);
 app.get(`${path}hello`, async (req, res) => {
     const visitorName = req.query.visitor_name;
     let clientIp = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
-    clientIp = clientIp.split(",")[0].trim()
+    const ip = clientIp.split(",")[0].trim()
 
 
     try {
         // Using an IP geolocation service to get the location of the request.
-        const geoLocation = await axios.get(`https://api.ip2location.io/?key=${process.env.IP_LOCATION_API_KEY}&ip=${clientIp}&format=json`);
-
+        const geoLocation = await axios.get(`https://api.ip2location.io/?key=${process.env.IP_LOCATION_API_KEY}&ip=${ip}&format=json`);
+        
         const location = geoLocation.data.region_name;
 
 
@@ -32,7 +32,7 @@ app.get(`${path}hello`, async (req, res) => {
         res.json({
             ip: clientIp,
             location: location,
-            greeting: `Hello, ${visitorName}!, the temperature is ${temperature} degrees Celsius in ${location}`
+            // greeting: `Hello, ${visitorName}!, the temperature is ${temperature} degrees Celsius in ${location}`
             });
     }
 
