@@ -25,7 +25,7 @@ app.get(`${path}hello`, async (req, res) => {
 
         //  Using a weather API to get the temperature of the requester's location
 
-        const weatherResponse = await axios.get(`http://api.weatherapi.com/v1/current.json?key=${process.env.API_KEY}&q=${ip}`);
+        const weatherResponse = await axios.get(`http://api.weatherapi.com/v1/current.json?key=${process.env.API_KEY}&q=${location}`);
 
         const temperature = weatherResponse.data.current.temp_c;
 
