@@ -20,7 +20,7 @@ app.get(`${path}hello`, async (req, res) => {
         // Using an IP geolocation service to get the location of the request.
         const geoLocation = await axios.get(`https://ipinfo.io/${ip}?token=${API_KEY}`);
         
-        const location = geoLocation.data.region_name;
+        const location = geoLocation.data.region;
 
 
         //  Using a weather API to get the temperature of the requester's location
