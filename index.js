@@ -12,27 +12,22 @@ app.set('trust proxy', true);
 
 app.get(`${path}hello`, async (req, res) => {
     const visitorName = req.query.visitor_name;
+    let clientIp = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+    const ip = clientIp.split(",")[0].trim()
 
 
     try {
-        let clientIp = req.ip; // Default to req.ip which might be ::1 in some setups
         // Using an IP geolocation service to get the location of the request.
-        ;
+        const geoLocation = await axios.get(`https://api.ip2location.io/?key=${process.env.IP_LOCATION_API_KEY}&ip=${ip}&format=json`);
 
-        clientIp = req.headers["x-forwarded-for"] || req.headers["x-real-ip"] || req.connection.remoteAddress;
-        console.log(clientIp);y
-        const geoLocation = await axios.get(`http://api.weatherapi.com/v1/current.json?key=${process.env.API_KEY}&q=${clientIp}`);
-        
-
-        const location = `${geoLocation.data.city}`;
+        const location = `${geoLocation.data.city_name}, ${geoLocation.data.region_name}`;
 
 
         //  Using a weather API to get the temperature of the requester's location
 
-        const weatherResponse = await axios.get(`http://api.weatherapi.com/v1/current.json?key=${process.env.API_KEY}&q=${location}`);
-        
-        const temperature = await weatherResponse.data.current.temp_c;
-        console.log(temperature)
+        const weatherResponse = await axios.get(`http://api.weatherapi.com/v1/current.json?key=${process.env.API_KEY}&q=${ip}`);
+
+        const temperature = weatherResponse.data.current.temp_c;
 
         res.json({
             ip: clientIp,
