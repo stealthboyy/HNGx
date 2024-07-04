@@ -12,13 +12,17 @@ app.set('trust proxy', true);
 
 app.get(`${path}hello`, async (req, res) => {
     const visitorName = req.query.visitor_name;
-    let clientIp = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
-    const ip = clientIp.split(",")[0].trim()
 
 
     try {
+        let clientIp = req.ip; // Default to req.ip which might be ::1 in some setups
         // Using an IP geolocation service to get the location of the request.
-        const geoLocation = await axios.get(`https://ipinfo.io/${ip}?token=${process.env.IP_LOCATION_API_KEY}`);
+        ;
+
+        clientIp = req.headers["x-forwarded-for"] || req.headers["x-real-ip"] || req.connection.remoteAddress;
+        console.log(clientIp);y
+        const geoLocation = await axios.get(`http://api.weatherapi.com/v1/current.json?key=${process.env.API_KEY}&q=${clientIp}`);
+        
 
         const location = `${geoLocation.data.city}`;
 
