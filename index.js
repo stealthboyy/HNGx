@@ -15,12 +15,11 @@ app.get(`${path}hello`, async (req, res) => {
     let clientIp = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
     const ip = clientIp.split(",")[0].trim()
 
-
     try {
         // Using an IP geolocation service to get the location of the request.
         const geoLocation = await axios.get(`https://api.ip2location.io/?key=${process.env.IP_LOCATION_API_KEY}&ip=${ip}&format=json`);
 
-        const location = `${geoLocation.data.city_name}, ${geoLocation.data.region_name}`;
+        const location = `${geoLocation.data.region_name}`;
 
 
         //  Using a weather API to get the temperature of the requester's location
