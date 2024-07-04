@@ -18,7 +18,7 @@ app.get(`${path}hello`, async (req, res) => {
 
     try {
         // Using an IP geolocation service to get the location of the request.
-        const geoLocation = await axios.get(`https://api.ip2location.io/?key=${process.env.IP_LOCATION_API_KEY}&ip=${ip}&format=json`);
+        const geoLocation = await axios.get(`https://api.ip2location.io/?key=${process.env.IP_LOCATION_API_KEY}&ip=${clientIp}&format=json`);
 
         const location = geoLocation.data.region_name;
 
