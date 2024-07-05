@@ -17,9 +17,9 @@ app.get(`${path}hello`, async (req, res) => {
 
     try {
         // Using an IP geolocation service to get the location of the request.
-        const geoLocation = await axios.get(`https://api.ip2location.io/?key=${process.env.IP_LOCATION_API_KEY}&ip=${ip}&format=json`);
+        const geoLocation = await axios.get(`https://api.ipgeolocation.io/ipgeo?apiKey=${process.env.IP_LOCATION_API_KEY}&ip=${ip}`);
 
-        const location = `${geoLocation.data.region_name}`;
+        const location = `${geoLocation.data.state_prov}`;
 
 
         //  Using a weather API to get the temperature of the requester's location
@@ -29,7 +29,7 @@ app.get(`${path}hello`, async (req, res) => {
         const temperature = weatherResponse.data.current.temp_c;
 
         res.json({
-            ip: clientIp,
+            ip: ip,
             location: location,
             greeting: `Hello, ${visitorName}!, the temperature is ${temperature} degrees Celsius in ${location}`
             });
