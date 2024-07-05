@@ -33,7 +33,7 @@ app.get(`${path}hello`, async (req, res) => {
         const temperature = weatherResponse.data.current.temp_c;
 
         res.json({
-            ip: ip,
+            client_ip: ip,
             location: location,
             greeting: `Hello, ${visitorName}!, the temperature is ${temperature} degrees Celsius in ${location}`
             });
